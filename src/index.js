@@ -1,20 +1,52 @@
 const dogContainer = document.querySelector("#dog-image-container");
 const makeUl = document.createElement("ul");
-
+let breedsArray = [];
 document.addEventListener("DOMContentLoaded", () => {
   console.log("%c HI", "color: firebrick");
 
   fetchDogPictures();
   fetchDogBreeds();
 
+  // Event Listeners
 
-
- // Event Listeners
+  // change color of breeds in list on clicking
 
   const ulContainer = document.getElementById("dog-breeds");
 
   ulContainer.addEventListener("click", (e) => {
-    e.target.style.color = "rgb(9, 255, 0)";
+
+    if (e.target.nodeName === "LI") {
+        if (e.target.style.color === "rgb(9, 255, 0)") {
+          e.target.style.color = "black";
+        } else {
+          e.target.style.color = "rgb(9, 255, 0)";
+        }
+
+    }
+  });
+
+  // add listener to dropdown list
+
+  const dropDown = document.getElementById("breed-dropdown");
+
+  dropDown.addEventListener("change", (event) => {
+    const letter = event.target.value;
+
+    // filter out the breeds that begin with letter selected from dropdown
+
+    const filteredBreeds = breedsArray.filter((breed) =>
+      breed.startsWith(letter)
+    );
+
+
+
+    // remove previous breed list from ul breed container
+
+    ulContainer.innerHTML = " ";
+
+    // append new filtered list
+
+    filteredBreeds.forEach((breed) => createAppendLiEl(breed));
   });
 });
 
@@ -42,7 +74,9 @@ const fetchDogBreeds = () => {
     .then((resp) => resp.json())
     .then((data) => {
       console.log(data);
-      Object.keys(data.message).forEach((key) => {
+      breedsArray = Object.keys(data.message);
+
+      breedsArray.forEach((key) => {
         createAppendLiEl(key);
       });
     });
@@ -77,9 +111,4 @@ function appendEl(el1, el2, el3) {
   el2.append(el1);
 
   document.getElementById(el3).append(el2);
-}
-
-function addSelectDropDownOptions() {
-    const dropDown = document.querySelector("#breed-dropdown");
-    const option = document.createElement("option");
 }
