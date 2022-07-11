@@ -1,15 +1,22 @@
 const dogContainer = document.querySelector("#dog-image-container");
 const makeUl = document.createElement("ul");
-const ulBreedContainer = document.querySelector("#dog-breeds");
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("%c HI", "color: firebrick");
+  console.log("%c HI", "color: firebrick");
 
-    fetchDogPictures();
-    fetchDogBreeds();
-    ulBreedContainer.addEventListener("click", handleClick());
+  fetchDogPictures();
+  fetchDogBreeds();
+
+
+
+ // Event Listeners
+
+  const ulContainer = document.getElementById("dog-breeds");
+
+  ulContainer.addEventListener("click", (e) => {
+    e.target.style.color = "rgb(9, 255, 0)";
+  });
 });
-
 
 // ASYNC Functions and JSON
 
@@ -28,22 +35,20 @@ const fetchDogPictures = () => {
 
 // retrieves dog breeds from api as json and parses into object literal
 
-const breedUrl = 'https://dog.ceo/api/breeds/list/all';
+const breedUrl = "https://dog.ceo/api/breeds/list/all";
 
-    const fetchDogBreeds = () => {
-        fetch (breedUrl)
-        .then((resp) => resp.json())
-        .then((data) => {
-            console.log(data);
-            Object.keys(data.message).forEach((key) => {
-                createEl(key);
-            });
-        })
-    }
-
+const fetchDogBreeds = () => {
+  fetch(breedUrl)
+    .then((resp) => resp.json())
+    .then((data) => {
+      console.log(data);
+      Object.keys(data.message).forEach((key) => {
+        createAppendLiEl(key);
+      });
+    });
+};
 
 // DOM Manipulations
-
 
 // Makes Img element to be appended to DOM
 
@@ -56,17 +61,16 @@ function makeEl(img) {
   appendEl(newImg, newLi, "dog-image-container");
 }
 
-
 // makes element from dog breed data that is appeneded to the DOM
 
-    function createEl(objKey) {
-        let newListItem = document.createElement("li");
-        newListItem.classList.add("breed-list");
-        newListItem.textContent = objKey;
+function createAppendLiEl(objKey) {
+  let newListItem = document.createElement("li");
 
-        appendEl("", newListItem, "dog-breeds");
+  newListItem.classList.add("breed-list");
+  newListItem.textContent = objKey;
 
-    }
+  document.getElementById("dog-breeds").append(newListItem);
+}
 // function that appends any elements passed to it to the dog container of document
 
 function appendEl(el1, el2, el3) {
@@ -75,14 +79,7 @@ function appendEl(el1, el2, el3) {
   document.getElementById(el3).append(el2);
 }
 
-// Event Listeners
-
-
-
-function handleClick() {
-   console.log("test");
+function addSelectDropDownOptions() {
+    const dropDown = document.querySelector("#breed-dropdown");
+    const option = document.createElement("option");
 }
-
-
-
-
